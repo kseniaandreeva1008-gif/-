@@ -1,0 +1,91 @@
+{
+    "alphabet": [
+        "a",
+        "b",
+        "Y",
+        "N"
+    ],
+    "states": {
+        "q0": {
+            "comment": "",
+            "a": "λ R q1_a",
+            "b": "λ R q1_b",
+            "λ": "Y N !",
+            "Y": "N",
+            "N": "N"
+        },
+        "q1_a": {
+            "comment": "",
+            "a": "R",
+            "b": "R",
+            "λ": "λ L q2_a",
+            "Y": "N",
+            "N": "N"
+        },
+        "q1_b": {
+            "comment": "",
+            "a": "R",
+            "b": "R",
+            "λ": "λ L q2_b",
+            "Y": "N",
+            "N": "N"
+        },
+        "q2_a": {
+            "comment": "",
+            "a": "λ L q3",
+            "b": "λ L qN_clean",
+            "λ": "λ L qY_clean",
+            "Y": "N",
+            "N": "N"
+        },
+        "q2_b": {
+            "comment": "",
+            "a": "λ L qN_clean",
+            "b": "λ L q3",
+            "λ": "λ N qY_clean",
+            "Y": "N",
+            "N": "N"
+        },
+        "qN": {
+            "comment": "",
+            "a": "N",
+            "b": "N",
+            "Y": "N",
+            "N": "!",
+            "λ": "N N !"
+        },
+        "qY": {
+            "comment": "",
+            "a": "N",
+            "b": "N",
+            "Y": "!",
+            "N": "N",
+            "λ": "Y N !"
+        },
+        "q3": {
+            "comment": "",
+            "a": "L",
+            "b": "L",
+            "Y": "N",
+            "N": "N",
+            "λ": "λ R q0"
+        },
+        "qY_clean": {
+            "comment": "",
+            "a": "λ L qY_clean",
+            "b": "λ L qY_clean",
+            "Y": "N",
+            "N": "N",
+            "λ": "Y N qY"
+        },
+        "qN_clean": {
+            "comment": "",
+            "a": "λ L qN_clean",
+            "b": "λ L qN_clean",
+            "Y": "N",
+            "N": "N",
+            "λ": "N N qN"
+        }
+    },
+    "word": "N"
+}
