@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>ЛР №3 — Сортировка массивов</title>
+<style>
+body {
+    font-family: Arial;
+    background: #f2f4f8;
+    padding: 20px;
+}
+.card {
+    background: white;
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+button {
+    padding: 8px 12px;
+    margin: 5px 0;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+}
+input, select {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+.result {
+    background: #eee;
+    padding: 10px;
+    margin-top: 10px;
+    font-family: monospace;
+    border-radius: 4px;
+}
+.error {
+    color: red;
+    margin-top: 5px;
+}
+#savedArraysTable {
+    margin-top: 15px;
+    border: 1px solid #ddd;
+    width: 100%;
+    border-collapse: collapse;
+}
+#savedArraysTable th, #savedArraysTable td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+    font-size: 14px;
+}
+#savedArraysTable th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+.action-btn {
+    padding: 4px 8px;
+    margin: 2px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    border: none;
+}
+.use-btn {
+    background: #4CAF50;
+    color: white;
+}
+.delete-btn {
+    background: #ff6b6b;
+    color: white;
+}
+.info-text {
+    color: #666;
+    font-size: 14px;
+    margin: 5px 0;
+}
+.section-title {
+    color: #333;
+    margin-top: 20px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #66a6ff;
+}
+
+/* Стили для справки */
+.help-section {
+    background: #e8f4fd;
+    border-left: 4px solid #2196F3;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+.help-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1976D2;
+    margin-bottom: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.help-title:hover {
+    color: #0D47A1;
+}
+.help-content {
+    display: none;
+    margin-top: 10px;
+}
+.help-content.show {
+    display: block;
+}
+.help-step {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+.help-step strong {
+    color: #1976D2;
+}
+.help-icon {
+    font-size: 20px;
+    transition: transform 0.3s;
+}
+.help-icon.rotated {
+    transform: rotate(180deg);
+}
+kbd {
+    background: #f4f4f4;
+    border-radius: 3px;
+    padding: 2px 5px;
+    font-family: monospace;
+    border: 1px solid #ccc;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+<h2>🌳 Лабораторная работа №3 - Сортировка деревом (Tree Sort)</h2>
+<p class="info-text">👤 Пользователь: <strong>{{ username }}</strong></p>
+<button onclick="logout()" style="background:#ff6b6b; color:white;">🚪 Выйти</button>
+
+<!-- БЛОК СПРАВКИ -->
+<div class="help-section">
+    <div class="help-title" onclick="toggleHelp()">
+        <span>📖 СПРАВКА: Как пользоваться программой</span>
+        <span class="help-icon" id="helpIcon">▼</span>
+    </div>
+    <div class="help-content" id="helpContent">
+        <div class="help-step">
+            <strong> 1. Ввод массива</strong><br>
+            • <strong>Ручной ввод:</strong> введите числа через запятую (например: <kbd>5, 3, 8, 1, 9</kbd>)<br>
+            • <strong>Загрузка из файла:</strong> нажмите кнопку "Выберите файл" и выберите .txt файл с числами<br>
+            • <strong>Случайный массив:</strong> нажмите кнопку "🎲 Случайный массив" для генерации 10 случайных чисел
+        </div>
+
+        <div class="help-step">
+            <strong> 2. Сортировка</strong><br>
+            • Нажмите кнопку <strong>" Отсортировать"</strong><br>
+            • Результат появится в поле ниже с указанием времени выполнения<br>
+            • Исходный и отсортированный массивы сохраняются для дальнейшей работы
+        </div>
+
+
+        <div class="help-step">
+            <strong> 3. Сохранение в базу данных</strong><br>
+            • После сортировки нажмите <strong>"💾 Сохранить в БД"</strong><br>
+            • Массив сохранится в вашем личном кабинете<br>
+            • Все сохранённые массивы видны в разделе "Мои сохранённые массивы"
+        </div>
+
+        <div class="help-step">
+            <strong> 4. Работа с сохранёнными массивами</strong><br>
+            • <strong> Загрузить сохранённые</strong> — показать все ваши сохранённые массивы<br>
+            • <strong>Использовать</strong> — подставить массив в поле ввода и автоматически отсортировать<br>
+            • <strong>Удалить</strong> — удалить массив из базы данных<br>
+            • <strong>🧹 Очистить таблицу</strong> — скрыть таблицу (не удаляет данные)
+        </div>
+
+
+    </div>
+</div>
+
+<hr>
+
+<h3 class="section-title">📊 Работа с массивом</h3>
+
+<input id="arrayInput" placeholder="Введите числа через запятую (пример: 5, 2, 9, 1, -3)">
+<p class="info-text">📂 Или загрузите из файла:</p>
+<input type="file" accept=".txt" onchange="loadTxt(this)">
+
+<div style="margin: 10px 0; display: flex; gap: 10px; flex-wrap: wrap;">
+    <button onclick="generate()" style="background:#66a6ff; color:white;">🎲 Случайный массив</button>
+    <button onclick="sortArray()" style="background:#4CAF50; color:white;">🔀 Отсортировать</button>
+    <button onclick="saveCurrentArray()" style="background:#9c27b0; color:white;">💾 Сохранить в БД</button>
+</div>
+
+<div id="result" class="result"></div>
+
+<hr>
+
+<h3 class="section-title">💾 Сохранение на компьютер</h3>
+
+<input id="fileName" placeholder="Имя файла (без .txt)">
+<select id="saveType">
+    <option value="original">Исходный массив</option>
+    <option value="sorted">Отсортированный массив</option>
+</select>
+
+<button onclick="saveToPC()" style="background:#2196F3; color:white;">📥 Скачать .txt</button>
+
+<div id="saveError" class="error"></div>
+
+<hr>
+
+<h3 class="section-title">📁 Мои сохранённые массивы</h3>
+<p class="info-text">Массивы, сохранённые в базе данных:</p>
+
+<div style="margin: 10px 0; display: flex; gap: 10px;">
+    <button onclick="loadMyArrays()" style="background:#FF9800; color:white;">🔄 Загрузить сохранённые</button>
+    <button onclick="clearArrays()" style="background:#757575; color:white;">🧹 Очистить таблицу</button>
+</div>
+
+<table id="savedArraysTable" style="display:none;">
+    <thead>
+        <tr><th>№</th><th>Отсортированный массив</th><th>Дата сохранения</th><th>Действия</th></tr>
+    </thead>
+    <tbody id="savedArraysBody"></tbody>
+</table>
+
+<div id="arraysMessage" style="margin:10px 0; padding:10px; background:#e8f5e8; border-radius:4px; display:none;"></div>
+<div id="arraysError" class="error"></div>
+
+</div>
+
+<script>
+let lastOriginal = null;
+let lastSorted = null;
+
+// Функция для сворачивания/разворачивания справки
+function toggleHelp() {
+    const content = document.getElementById('helpContent');
+    const icon = document.getElementById('helpIcon');
+    content.classList.toggle('show');
+    icon.classList.toggle('rotated');
+}
+
+function loadTxt(input) {
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = e => {
+        arrayInput.value = e.target.result.trim();
+    };
+    reader.readAsText(file);
+}
+
+async function generate() {
+    const r = await fetch('/api/generate', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({size:10,min:0,max:50})
+    });
+    const d = await r.json();
+    arrayInput.value = d.array.join(', ');
+}
+
+async function sortArray() {
+    const input = document.getElementById("arrayInput").value.trim();
+    if (!input) {
+        document.getElementById("result").innerText = "⚠️ Введите массив для сортировки";
+        return;
+    }
+    const r = await fetch('/api/sort', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({array: input})
+    });
+    const d = await r.json();
+    if (!d.success) {
+        document.getElementById("result").innerText = "❌ Ошибка: " + d.error;
+        return;
+    }
+    lastOriginal = d.original;
+    lastSorted = d.sorted;
+    document.getElementById("result").innerHTML =
+        "<strong>📥 Исходный массив:</strong> " + d.original.join(', ') + "<br>" +
+        "<strong>✅ Отсортированный массив:</strong> " + d.sorted.join(', ') + "<br>" +
+        "<strong>⏱️ Время сортировки:</strong> " + d.time + " секунд";
+}
+
+function saveToPC() {
+    document.getElementById("saveError").innerText = "";
+    const name = document.getElementById("fileName").value.trim().toUpperCase();
+    if (!name) {
+        document.getElementById("saveError").innerText = "❌ Введите имя файла";
+        return;
+    }
+    let data;
+    const saveType = document.getElementById("saveType").value;
+    if (saveType === "original") {
+        if (!lastOriginal) {
+            document.getElementById("saveError").innerText = "❌ Нет исходного массива. Сначала отсортируйте массив.";
+            return;
+        }
+        data = lastOriginal;
+    } else {
+        if (!lastSorted) {
+            document.getElementById("saveError").innerText = "❌ Нет отсортированного массива. Сначала отсортируйте массив.";
+            return;
+        }
+        data = lastSorted;
+    }
+    const blob = new Blob([data.join(', ')], {type: "text/plain"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = name + ".txt";
+    a.click();
+    document.getElementById("saveError").innerText = "✅ Файл " + name + ".txt сохранён!";
+}
+
+async function loadMyArrays() {
+    document.getElementById("arraysError").innerText = "";
+    document.getElementById("arraysMessage").style.display = "none";
+    try {
+        const response = await fetch('/api/my_arrays');
+        if (response.status === 401) {
+            document.getElementById("arraysError").innerText = "❌ Необходимо авторизоваться";
+            return;
+        }
+        const data = await response.json();
+        if (!data.arrays || data.arrays.length === 0) {
+            document.getElementById("arraysMessage").innerHTML = "📭 Нет сохранённых массивов. Сохраните массив с помощью кнопки 'Сохранить в БД'.";
+            document.getElementById("arraysMessage").style.display = "block";
+            document.getElementById("savedArraysTable").style.display = 'none';
+            return;
+        }
+        document.getElementById("savedArraysBody").innerHTML = '';
+        data.arrays.forEach((array, index) => {
+            const row = document.createElement('tr');
+            const idCell = document.createElement('td');
+            idCell.textContent = index + 1;
+            row.appendChild(idCell);
+            const arrayCell = document.createElement('td');
+            const sortedArray = array.sorted;
+            arrayCell.innerHTML = `<span title="${sortedArray}">${sortedArray.length > 50 ? sortedArray.substring(0, 50) + '...' : sortedArray}</span>`;
+            arrayCell.style.fontFamily = 'monospace';
+            row.appendChild(arrayCell);
+            const dateCell = document.createElement('td');
+            const date = new Date(array.created_at);
+            dateCell.textContent = date.toLocaleString('ru-RU');
+            row.appendChild(dateCell);
+            const actionsCell = document.createElement('td');
+            const useBtn = document.createElement('button');
+            useBtn.className = 'action-btn use-btn';
+            useBtn.textContent = 'Использовать';
+            useBtn.onclick = () => {
+                document.getElementById("arrayInput").value = sortedArray;
+                sortArray();
+            };
+            actionsCell.appendChild(useBtn);
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'action-btn delete-btn';
+            deleteBtn.textContent = 'Удалить';
+            deleteBtn.onclick = () => deleteArray(array.id);
+            actionsCell.appendChild(deleteBtn);
+            row.appendChild(actionsCell);
+            document.getElementById("savedArraysBody").appendChild(row);
+        });
+        document.getElementById("savedArraysTable").style.display = 'table';
+        document.getElementById("arraysMessage").innerHTML = `✅ Загружено ${data.arrays.length} сохранённых массивов`;
+        document.getElementById("arraysMessage").style.display = "block";
+    } catch (error) {
+        document.getElementById("arraysError").innerText = "❌ Ошибка загрузки массивов";
+    }
+}
+
+async function deleteArray(arrayId) {
+    if (!confirm("🗑️ Удалить этот массив из базы данных?")) return;
+    try {
+        const response = await fetch(`/api/delete_array/${arrayId}`, {method: 'DELETE'});
+        const data = await response.json();
+        if (data.success) {
+            document.getElementById("arraysMessage").innerHTML = "✅ Массив удалён";
+            document.getElementById("arraysMessage").style.display = "block";
+            loadMyArrays();
+        } else {
+            document.getElementById("arraysError").innerText = data.error || "❌ Ошибка удаления";
+        }
+    } catch (error) {
+        document.getElementById("arraysError").innerText = "❌ Ошибка соединения";
+    }
+}
+
+async function saveCurrentArray() {
+    if (!lastOriginal || !lastSorted) {
+        document.getElementById("arraysError").innerText = "❌ Нет массива для сохранения. Сначала отсортируйте массив.";
+        return;
+    }
+    try {
+        const response = await fetch('/api/save', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ array: lastOriginal.join(', ') })
+        });
+        const data = await response.json();
+        if (data.success) {
+            document.getElementById("arraysMessage").innerHTML = "✅ Массив сохранён в базу данных!";
+            document.getElementById("arraysMessage").style.display = "block";
+            setTimeout(() => loadMyArrays(), 500);
+        } else {
+            document.getElementById("arraysError").innerText = "❌ Ошибка сохранения";
+        }
+    } catch (error) {
+        document.getElementById("arraysError").innerText = "❌ Ошибка соединения с сервером";
+    }
+}
+
+function clearArrays() {
+    document.getElementById("savedArraysBody").innerHTML = '';
+    document.getElementById("savedArraysTable").style.display = 'none';
+    document.getElementById("arraysMessage").innerHTML = "🧹 Таблица очищена";
+    document.getElementById("arraysMessage").style.display = "block";
+}
+
+async function logout() {
+    await fetch('/logout', {method:'POST'});
+    location.href = '/login';
+}
+
+window.onload = function() {
+    setTimeout(() => loadMyArrays(), 500);
+};
+</script>
+
+</body>
+</html>

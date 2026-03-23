@@ -1,0 +1,22 @@
+================================================================================
+INTEGRATION TESTS RESULTS
+Date and time: 2026-03-23 17:01:20
+================================================================================
+
+
+--- TEST FOR 100 ARRAYS ---
+Test A (Add): SUCCESS, time: 0.0364 sec
+Test B (Sort): SUCCESS, time: 0.0033 sec
+Test C (Clear): SUCCESS, time: 0.0002 sec
+
+--- TEST FOR 1000 ARRAYS ---
+Test A (Add): SUCCESS, time: 0.3129 sec
+Test B (Sort): SUCCESS, time: 0.0320 sec
+Test C (Clear): SUCCESS, time: 0.0004 sec
+
+--- TEST FOR 10000 ARRAYS ---
+Test A (Add): SUCCESS, time: 3.4029 sec
+Test B (Sort): SUCCESS, time: 0.3187 sec
+Test C (Clear): SUCCESS, time: 0.0014 sec
+
+================================================================================
